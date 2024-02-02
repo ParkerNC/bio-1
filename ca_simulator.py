@@ -110,7 +110,17 @@ class CASimulator():
         f.close() 
 
     def calculate_z(self):
-        return 42
+        #odds of survival
+        dead = 0
+        d = [1, 3, 6, 10, 15, 18, 19, 18, 15, 10, 6, 3, 1]
+        configs = sum(d)
+
+        for i, state in enumerate(self.rule_table):
+            if state == 0:
+                dead += d[i]
+
+        live = float((configs - dead)/configs)
+        return live
 
     def calculate_lambda_t(self):
         num0 = 0

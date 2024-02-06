@@ -72,7 +72,6 @@ class CASimulator():
                 lam = self.calculate_lambda()
                 H_T = self.calculate_H_T()
                 H = self.calculate_H()
-                Z = self.calculate_z()
                 
 
                 if (z == 0):
@@ -80,9 +79,8 @@ class CASimulator():
                 else:
                     entry_zeroed = str(index_to_0)
 
-                f.write(str(z) + "," + entry_zeroed + ",," + str(lam) + "," + str(lam_T) + "," + str(H) + "," + str(H_T) + ","+str(Z)+",\n")
+                #f.write(str(z) + "," + entry_zeroed + ",," + str(lam) + "," + str(lam_T) + "," + str(H) + "," + str(H_T) + ","+str(Z)+",\n")
 
-                #f.write(f"{str(z)},{entry_zeroed},,{str(lam)},{str(lam_T)},{str(H)},{str(H_T)},{str(Z)}\n") 
                 
                 # Randomly select one to be decimated and remove it
                 if (len(to_be_decimated) > 0):
@@ -93,6 +91,11 @@ class CASimulator():
                 for x in range(len(self.board)-1):
                     for y in range(len(self.board[x])):
                         self.board[x+1][y] = int(self.rule_table[int(self.calculate_my_sum(x,y))])
+
+
+                Z = self.calculate_z()
+                f.write(f"{str(z)},{entry_zeroed},,{str(lam)},{str(lam_T)},{str(H)},{str(H_T)},{str(Z)} {str(Z/lam)} {str(Z/lam_T)} {str(Z/H)} {str(Z/H_T)}\n") 
+
 
                 # Create the associated figure 
                 fig = plt.figure()
@@ -110,17 +113,15 @@ class CASimulator():
         f.close() 
 
     def calculate_z(self):
-        #odds of survival
-        dead = 0
-        d = [1, 3, 6, 10, 15, 18, 19, 18, 15, 10, 6, 3, 1]
-        configs = sum(d)
-
-        for i, state in enumerate(self.rule_table):
-            if state == 0:
-                dead += d[i]
-
-        live = float((configs - dead)/configs)
-        return live
+        #Average numeric value of a cell for the last row of each experiment
+        row = self.board[int(self.timesteps/4)]
+        print(row)
+        l = len(row)
+        s = 0
+        for i, cell in enumerate(row):
+            #val = row[(i-1)%l] * 100 + 10 * cell + row[(i+1)%l]
+            s += cell
+        return s / l
 
     def calculate_lambda_t(self):
         num0 = 0

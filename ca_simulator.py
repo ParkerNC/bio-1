@@ -79,7 +79,6 @@ class CASimulator():
                 else:
                     entry_zeroed = str(index_to_0)
 
-                #f.write(str(z) + "," + entry_zeroed + ",," + str(lam) + "," + str(lam_T) + "," + str(H) + "," + str(H_T) + ","+str(Z)+",\n")
 
                 
                 # Randomly select one to be decimated and remove it
@@ -94,7 +93,8 @@ class CASimulator():
 
 
                 Z = self.calculate_z()
-                f.write(f"{str(z)},{entry_zeroed},,{str(lam)},{str(lam_T)},{str(H)},{str(H_T)},{str(Z)} {str(Z/lam)} {str(Z/lam_T)} {str(Z/H)} {str(Z/H_T)}\n") 
+                #f.write(f"{str(z)},{entry_zeroed},,{str(lam)},{str(lam_T)},{str(H)},{str(H_T)},{str(Z)} {str(Z/lam)} {str(Z/lam_T)} {str(Z/H)} {str(Z/H_T)}\n") 
+                f.write(str(z) + "," + entry_zeroed + ",," + str(lam) + "," + str(lam_T) + "," + str(H) + "," + str(H_T) + ","+str(Z)+",\n")
 
 
                 # Create the associated figure 
@@ -113,9 +113,8 @@ class CASimulator():
         f.close() 
 
     def calculate_z(self):
-        #Average numeric value of a cell for the last row of each experiment
+        #Average numeric value of a cell for and early row of each experiment
         row = self.board[int(self.timesteps/4)]
-        print(row)
         l = len(row)
         s = 0
         for i, cell in enumerate(row):
